@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(my_first_package_msgs)
+project(turtle_com_package_msgs)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -14,9 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/CmdAndPoseVel.msg"
-  "srv/MultiSpawn.srv"
-  "action/DistTurtle.action"
+  "msg/TurtleMsg.msg"
 )
 
 if(BUILD_TESTING)
