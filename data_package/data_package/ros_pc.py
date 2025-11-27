@@ -58,7 +58,7 @@ class Makedata(Node):
     def __init__(self):
         super().__init__('make_data')
         self.pub = self.create_publisher(LaserScan, 'set_data',10)
-        timer_period = 2.0
+        timer_period = 3.0
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
 
