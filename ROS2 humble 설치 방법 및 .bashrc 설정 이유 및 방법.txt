@@ -1,0 +1,70 @@
+ROS2 humble 설치 방법
+1. https://docs.ros.org/en/humble/Installation.html 사이트 접속
+2. Binary packages 의 Ubuntu Linux(amd64/ aarch64) - Jammy Jellyfish (22.04) 의 deb packages 클릭
+3. 아래로 스크롤 내린 후 Set locale, Setup Sources, Install ROS 2 packages 순으로 코드 복사 및 붙여넣기
+4. Install 부분에서 Desktop install 만 install 하기
+5. 코드
+
+Set locale
+---------------------------------------------------------
+locale  # check for UTF-8
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+locale  # verify settings
+---------------------------------------------------------
+
+Set Sources
+---------------------------------------------------------
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+
+sudo apt update && sudo apt install curl -y
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+---------------------------------------------------------
+
+Install ROS 2 packages
+---------------------------------------------------------
+sudo apt update
+sudo apt upgrade
+
+sudo apt install ros-humble-desktop
+---------------------------------------------------------
+
+
+6. ros 2 다운로드 후 ros2 실행을 위해선 환경 셋업을 해야함
+source /opt/ros/humble/setup.bash 를 입력후 ros 실행 가능
+
+7. ros2 가 설치되었는지 확인 하기 위해 터미널을 하나 더 열어서 talker,listener 실행
+코드는 ros2 run demo_nodes_cpp talker, ros2 run demo_nodes_py listener 실행전 환경 셋업 필수
+
+8. ros를 실행할 때마다 환경 셋업을 하기 귀찮기 때문에 alias 명령어를 사용하여 별칭 부여
+
+9. .bashrc 파일을 열고 하기에 alias humble="source /opt/ros/humble/setup.bash" 작성
+
+10. .bashrc 파일을 수정하고 나서 적용 하려면 source ~/.bashrc 코드를 입력해 주어야 함
+
+11. 이 코드도 별칭을 부여해서 간단하게 실행 가능
+
+12. .bashrc 파일을 열고 하기에 alias sb="source ~/.bashrc" 작성
+
+13. 작성 완료후 source ~/.bashrc 코드 실행
+
+14. 이제부터 sb를 입력하면 source ~/.bashrc 코드가 실행됨
+	  humble을 입력하면 source /opt/ros/humble/setup.bashrc 코드가 실행됨
+
+15. ROS 2에서는 노드 간의 통신과 네임스페이스의 관리를 위해 DDS(Data Distribution System)을 이용
+
+16. 한 AP에서 여러 사람이 동시에 ROS 2를 공부한은 경우 같은 노드이름, 토픽 이름이 충돌이 날 수있음
+따라서 시스템 도메인을 별도로 지정한 필요가 있음.
+
+17. 별도로 도메인은 관리하는 방법은 export ROS_DOMAIN_ID=<ID> 코드를 작성해주면 됨
+이 코드 역시 alias 명령어로 별칭 부여 가능
+
+18. alias ros_domain="export ROS_DOMAIN_ID=13"을 .bashrc 하단에 추가해주면 
+됨
+
+
