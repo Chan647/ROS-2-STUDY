@@ -1,4 +1,5 @@
 import rclpy as rp
+import numpy as np
 import random
 import math
 from rclpy.node import Node
@@ -16,6 +17,8 @@ def Make_obj(ranges, center_deg, width_deg, distance=0.4):
     for offset in range(-half_width, half_width + 1):
         idx = (center_deg + offset) % NUM_POINTS
         ranges[idx] = distance
+    random_idx = random.randrange(0, 359)
+    ranges[random_idx] = np.inf
 
 def Not(ranges):
     for i in range(NUM_POINTS):
@@ -65,7 +68,7 @@ class Makedata(Node):
     def timer_callback(self):
         ranges = [RANGE_MAX] * NUM_POINTS
         intensities = [float(100) for _ in range(NUM_POINTS)]
-
+        
         pattern = random.choice(PATTERNS)
         pattern_name = pattern.__name__
         pattern(ranges)
